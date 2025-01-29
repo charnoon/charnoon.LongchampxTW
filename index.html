@@ -1,1 +1,100 @@
-<!doctype html><html xmlns="http://www.w3.org/1999/xhtml"><head><title>Keynote</title><meta name="viewport" content="initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,width=device-width"/><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/></head><body id="body" bgcolor="black"><div id="stageArea"><div id="stage" class="stage"></div><div id="hyperlinkPlane" class="stage"></div></div><div id="slideshowNavigator"></div><div id="slideNumberControl"></div><div id="slideNumberDisplay"></div><div id="helpPlacard"></div><div id="waitingIndicator"><div id="waitingSpinner"></div></div><script src="assets/player/main.js"></script></body></html>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Keynote</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    
+    <style>
+        /* General Improvements */
+        html, body {
+            margin: 0;
+            padding: 0;
+            background-color: black;
+            image-rendering: -webkit-optimize-contrast;
+            text-rendering: optimizeLegibility;
+            font-smooth: always;
+            overflow: hidden; /* Prevent unwanted scroll */
+        }
+
+        /* Stage Optimization */
+        .stage {
+            width: 100%;
+            height: 100%;
+            transform: translate3d(0, 0, 0); /* GPU acceleration */
+            will-change: transform, opacity;
+        }
+
+        /* Responsive Image and Video Rendering */
+        img, video {
+            max-width: 100%;
+            height: auto;
+            image-rendering: crisp-edges;
+        }
+
+        /* High-Resolution Canvas */
+        canvas {
+            width: 100%;
+            height: 100%;
+            image-rendering: pixelated;
+        }
+
+        /* Anti-aliasing for Smooth Rendering */
+        #stage, #hyperlinkPlane {
+            image-rendering: high-quality;
+            image-rendering: optimizeSpeed;
+        }
+
+        /* Ensure Elements Scale Properly */
+        #stageArea {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        /* Smooth Transitions for UI */
+        #waitingIndicator {
+            transition: opacity 0.3s ease-in-out;
+        }
+    </style>
+</head>
+<body id="body">
+    <div id="stageArea">
+        <div id="stage" class="stage"></div>
+        <div id="hyperlinkPlane" class="stage"></div>
+    </div>
+    
+    <div id="slideshowNavigator"></div>
+    <div id="slideNumberControl"></div>
+    <div id="slideNumberDisplay"></div>
+    <div id="helpPlacard"></div>
+    <div id="waitingIndicator">
+        <div id="waitingSpinner"></div>
+    </div>
+
+    <script>
+        // Improve Pixel Density on Canvas (if used)
+        function optimizeCanvasResolution() {
+            let canvas = document.querySelector('canvas');
+            if (canvas) {
+                let dpr = window.devicePixelRatio || 1;
+                canvas.width = canvas.clientWidth * dpr;
+                canvas.height = canvas.clientHeight * dpr;
+                let ctx = canvas.getContext("2d");
+                ctx.scale(dpr, dpr);
+                ctx.imageSmoothingEnabled = true;
+                ctx.imageSmoothingQuality = "high";
+            }
+        }
+
+        // Run the optimization function after page load
+        window.onload = function() {
+            optimizeCanvasResolution();
+        };
+    </script>
+
+    <script src="assets/player/main.js"></script>
+</body>
+</html>
