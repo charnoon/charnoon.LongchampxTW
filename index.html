@@ -2,14 +2,31 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>Keynote</title>
+    
+    <!-- Viewport for Responsive Scaling -->
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
+    
+    <!-- Character Encoding -->
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
     <style>
-        /* Ensure images scale properly */
+        /* Improve pixel clarity and rendering */
+        html, body {
+            image-rendering: -webkit-optimize-contrast; /* Better image scaling */
+            text-rendering: optimizeLegibility; /* Sharper text */
+            font-smooth: always; /* Enhance font clarity */
+        }
+
+        /* Enable GPU acceleration for smoother rendering */
+        .stage {
+            transform: translate3d(0, 0, 0);
+        }
+
+        /* Ensure images scale properly and render sharply */
         img {
-            max-width: 100%;
+            width: 100%;
             height: auto;
+            image-rendering: crisp-edges; /* Enhance sharpness */
         }
     </style>
 </head>
