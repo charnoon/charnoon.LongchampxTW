@@ -10,24 +10,47 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
     <style>
-        /* Improve pixel clarity and rendering */
+        /* General Styling */
         html, body {
-            image-rendering: -webkit-optimize-contrast; /* Better image scaling */
-            text-rendering: optimizeLegibility; /* Sharper text */
-            font-smooth: always; /* Enhance font clarity */
+            margin: 0;
+            padding: 0;
+            background-color: black;
+            image-rendering: -webkit-optimize-contrast;
+            text-rendering: optimizeLegibility;
+            font-smooth: always;
+            overflow: hidden; /* Prevents unwanted scrolling */
         }
 
-        /* Enable GPU acceleration for smoother rendering */
+        /* Slideshow Container (Ensuring Full Responsiveness) */
+        #stageArea {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100vw;
+            height: 100vh;
+        }
+
         .stage {
-            transform: translate3d(0, 0, 0);
+            position: relative;
+            width: 90%; /* Default size, adjusted dynamically */
+            height: auto;
+            max-width: 1200px; /* Maximum size limit */
+            transform: translate3d(0, 0, 0); /* Enable GPU acceleration */
             will-change: transform, opacity;
         }
 
-        /* Ensure images scale properly and render sharply */
+        /* Ensure images scale properly */
         img {
             width: 100%;
             height: auto;
             image-rendering: crisp-edges; /* Enhance sharpness */
+        }
+
+        /* Make Slideshow Responsive */
+        @media (max-width: 768px) {
+            .stage {
+                width: 95%; /* Slightly larger on smaller screens */
+            }
         }
 
         /* Retina Display Optimization */
@@ -50,10 +73,12 @@
         }
     </style>
 </head>
-<body id="body" style="background-color: black;">
+<body id="body">
     
     <div id="stageArea">
-        <div id="stage" class="stage"></div>
+        <div id="stage" class="stage">
+            <canvas id="slideshowCanvas"></canvas>
+        </div>
         <div id="hyperlinkPlane" class="stage"></div>
     </div>
 
@@ -67,13 +92,14 @@
     </div>
 
     <script>
-        // Optimize Canvas for Retina Displays
+        // Optimize Canvas for Retina Displays & Responsiveness
         function optimizeCanvasResolution() {
-            let canvas = document.querySelector('canvas');
+            let canvas = document.getElementById('slideshowCanvas');
             if (canvas) {
                 let dpr = window.devicePixelRatio || 1;
-                canvas.width = canvas.clientWidth * dpr;
-                canvas.height = canvas.clientHeight * dpr;
+                let rect = canvas.getBoundingClientRect();
+                canvas.width = rect.width * dpr;
+                canvas.height = rect.height * dpr;
                 let ctx = canvas.getContext("2d");
                 ctx.scale(dpr, dpr);
                 ctx.imageSmoothingEnabled = true;
@@ -81,10 +107,18 @@
             }
         }
 
-        // Run the optimization function after page load
-        window.onload = function() {
-            optimizeCanvasResolution();
-        };
+        // Adjust Slideshow Size on Resize
+        function resizeSlideshow() {
+            let stage = document.getElementById("stage");
+            if (stage) {
+                stage.style.height = (window.innerHeight * 0.8) + "px"; // Keep slideshow within viewport
+            }
+            optimizeCanvasResolution(); // Re-optimize canvas when resizing
+        }
+
+        // Run Optimization & Resize on Load and Resize Events
+        window.onload = resizeSlideshow;
+        window.onresize = resizeSlideshow;
     </script>
 
     <script src="assets/player/main.js"></script>
